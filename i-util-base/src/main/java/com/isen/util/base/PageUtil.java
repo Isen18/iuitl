@@ -10,7 +10,7 @@ import java.util.List;
  * @date 2018/11/15 16:29
  * @since 1.0
  */
-public class PageUtil {
+public final class PageUtil {
 
     private PageUtil(){}
 
