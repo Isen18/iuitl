@@ -84,5 +84,6 @@
     <modules>
         <module>i-util-retry</module>
         <module>i-util-base</module>
+        <module>i-util-lock</module>
     </modules>
 </project>
