@@ -1,5 +1,7 @@
 package com.isen.util.retry;
 
+import java.util.Arrays;
+
 /**
  * 重试结果
  *
@@ -33,5 +35,13 @@ public class RetryResult {
 
     public void setParameters(Object[] parameters) {
         this.parameters = parameters;
+    }
+
+    @Override
+    public String toString() {
+        return "RetryResult{" +
+                "retryReturn=" + retryReturn +
+                ", parameters=" + Arrays.toString(parameters) +
+                '}';
     }
 }
