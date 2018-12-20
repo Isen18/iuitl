@@ -1,7 +1,6 @@
 package com.isen.util.retry;
 
 import com.isen.util.retry.mapper.RetryInfoMapper;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
@@ -32,7 +31,7 @@ public class RetryUtilsTest {
     @Before
     public void before() throws Exception {
         testObject = new TestObject();
-        RetryUtils.instance().init(retryInfoMapper);
+        RetryUtils.INSTANCE.init(retryInfoMapper);
     }
 
     @After
@@ -47,7 +46,7 @@ public class RetryUtilsTest {
 
     @Test
     public void testStashAndInvoke() throws Exception {
-        String str = RetryUtils.instance().stashAndInvoke(testObject, "getHello", "张三", 12);
+        String str = RetryUtils.INSTANCE.stashAndInvoke(testObject, "getHello", "张三", 12);
         System.out.println(str);
 
 //        String str = (String) (testObject.getClass().getMethod("getHello", String.class, int.class).invoke(testObject,"张三", 12));
@@ -56,30 +55,30 @@ public class RetryUtilsTest {
 
     @Test
     public void testStashPopAndRetry() throws Exception{
-        List<RetryResult> retryResults =  RetryUtils.instance().stashPopAndRetry(testObject, "getHello");
+        List<RetryResult> retryResults =  RetryUtils.INSTANCE.stashPopAndRetry(testObject, "getHello");
         System.out.println(retryResults);
     }
 
     @Test
     public void testStashAndInvoke2() throws Exception {
-        int re = RetryUtils.instance().stashAndInvoke(testObject, "echoAge", 12);
+        int re = RetryUtils.INSTANCE.stashAndInvoke(testObject, "echoAge", 12);
         System.out.println(re);
     }
 
     @Test
     public void testStashPopAndRetry2() throws Exception{
-        List<RetryResult> retryResults =  RetryUtils.instance().stashPopAndRetry(testObject, "echoAge");
+        List<RetryResult> retryResults =  RetryUtils.INSTANCE.stashPopAndRetry(testObject, "echoAge");
         System.out.println(retryResults);
     }
 
     @Test
     public void testStashAndInvoke3() throws Exception {
-        RetryUtils.instance().stashAndInvoke(testObject, "printHello");
+        RetryUtils.INSTANCE.stashAndInvoke(testObject, "printHello");
     }
 
     @Test
     public void testStashPopAndRetry3() throws Exception{
-        List<RetryResult> retryResults =  RetryUtils.instance().stashPopAndRetry(testObject, "printHello");
+        List<RetryResult> retryResults =  RetryUtils.INSTANCE.stashPopAndRetry(testObject, "printHello");
         System.out.println(retryResults);
     }
 
@@ -87,12 +86,12 @@ public class RetryUtilsTest {
     public void testStashAndInvoke4() throws Exception {
         Person person = new Person();
         person.setA(18);
-        RetryUtils.instance().stashAndInvoke(testObject, "printPer", person);
+        RetryUtils.INSTANCE.stashAndInvoke(testObject, "printPer", person);
     }
 
     @Test
     public void testStashPopAndRetry4() throws Exception{
-        List<RetryResult> retryResults =  RetryUtils.instance().stashPopAndRetry(testObject, "printPer");
+        List<RetryResult> retryResults =  RetryUtils.INSTANCE.stashPopAndRetry(testObject, "printPer");
         System.out.println(retryResults);
     }
 
@@ -102,12 +101,12 @@ public class RetryUtilsTest {
         Person person = new Person();
         person.setA(18);
         personList.add(person);
-        RetryUtils.instance().stashAndInvoke(testObject, "printPerson", personList);
+        RetryUtils.INSTANCE.stashAndInvoke(testObject, "printPerson", personList);
     }
 
     @Test
     public void testStashPopAndRetry5() throws Exception{
-        List<RetryResult> retryResults =  RetryUtils.instance().stashPopAndRetry(testObject, "printPerson");
+        List<RetryResult> retryResults =  RetryUtils.INSTANCE.stashPopAndRetry(testObject, "printPerson");
         System.out.println(retryResults);
     }
 

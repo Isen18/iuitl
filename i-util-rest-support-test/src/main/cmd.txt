@@ -1,0 +1,1 @@
+mvn clean compile && java -cp target/classes com.isen.util.test.rest.support.App

@@ -85,5 +85,23 @@
         <module>i-util-retry</module>
         <module>i-util-base</module>
         <module>i-util-lock</module>
+        <!--<module>test1</module>-->
+        <module>test2</module>
+        <module>test3</module>
+        <module>i-util-rest-support</module>
+        <module>i-util-rest-support-test</module>
     </modules>
+
+    <distributionManagement>
+        <repository>
+            <id>Releases</id>
+            <name>Local Nexus Repository</name>
+            <url>http://192.168.1.177:8081/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>Snapshots</id>
+            <name>Local Nexus Repository</name>
+            <url>http://192.168.1.177:8081/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

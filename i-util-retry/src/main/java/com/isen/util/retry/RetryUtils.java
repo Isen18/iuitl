@@ -18,7 +18,7 @@ import java.util.List;
  * @date 2018/11/1 16:16
  * @since 1.0
  */
-public enum  RetryUtils{
+public enum RetryUtils{
     /**
      * 实例
      */
@@ -27,10 +27,6 @@ public enum  RetryUtils{
     private RetryInfoMapper retryInfoMapper;
 
     private Gson gson = new Gson();
-
-    public static RetryUtils instance(){
-        return INSTANCE;
-    }
 
     public void init(RetryInfoMapper retryInfoMapper){
         this.retryInfoMapper = retryInfoMapper;
