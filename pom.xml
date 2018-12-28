@@ -90,6 +90,8 @@
         <module>test3</module>
         <module>i-util-rest-support</module>
         <module>i-util-rest-support-test</module>
+        <module>javaPoet-le</module>
+        <module>i-util-mybatis-id-inject</module>
     </modules>
 
     <distributionManagement>

@@ -89,9 +89,10 @@ public class ReentrantLock {
     public void lock(String lockKey, long timeout, long lockKeyTimeout, TimeUnit unit)
             throws TimeoutException {
         if(lockKey == null || unit == null){
-            throw new NullPointerException("lockKey == null || unit == null");
+            throw new NullPointerException();
         }
 
+        logger.info("lock");
         long start = System.currentTimeMillis();
         boolean success = false;
         while (!success){
@@ -105,8 +106,8 @@ public class ReentrantLock {
                 Long lockOwnerThreadId = redisTemplate.opsForValue().get(lockKey);
                 if(threadId.equals(lockOwnerThreadId)){
                     //拥有锁的线程是当前线程
-                    incCount();
-                    logger.info("线程[threadId={}]重入锁[lockKey={}]", threadId, lockKey);
+                    int count = incCount();
+                    logger.info("线程[threadId={}]重入锁[lockKey={}, count={}]", threadId, lockKey, count);
                     return;
                 }
 
@@ -117,7 +118,8 @@ public class ReentrantLock {
             }
 
             if(success){
-                logger.info("线程[threadId={}]获取锁[lockKey={}]", threadId, lockKey);
+                int count = incCount();
+                logger.info("线程[threadId={}]获取锁[lockKey={}, count={}]", threadId, lockKey, count);
                 return;
             }
 
@@ -150,9 +152,10 @@ public class ReentrantLock {
      */
     public void unLock(String lockKey, long timeout) throws TimeoutException {
         if(lockKey == null){
-            throw new NullPointerException("lockKey == null");
+            throw new NullPointerException();
         }
 
+        logger.info("unLock");
         Long threadId = getCurrentThreadId();
         if(threadId == null){
             logger.error("线程id==null, 不能解锁, lockKey={}", lockKey);
@@ -223,7 +226,6 @@ public class ReentrantLock {
                 return null;
             }
             threadIdThreadLocal.set(id);
-            initCount();
         }
         return id;
     }
@@ -232,22 +234,25 @@ public class ReentrantLock {
         return threadIdThreadLocal.get();
     }
 
-    private void initCount(){
-        countThreadLocal.set(1);
-    }
-
     private Integer getCount(){
         return countThreadLocal.get();
     }
 
     private Integer incCount(){
-        Integer count = countThreadLocal.get() + 1;
+        Integer count = countThreadLocal.get();
+        logger.info("incCount count={}", count);
+        if(count == null){
+            count = 1;
+        }else {
+            count ++;
+        }
         countThreadLocal.set(count);
         return count;
     }
 
     private Integer decCount(){
         Integer count = countThreadLocal.get() - 1;
+        logger.info("decCount count={}", count);
         if(count < 0){
             count = 0;
         }

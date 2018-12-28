@@ -19,6 +19,6 @@ public class App {
 
     public static void main(String[] args) {
         App app = new App("it works");
-        System.out.println(app.getValue());
+//        System.out.println(app.getValue());
     }
 }

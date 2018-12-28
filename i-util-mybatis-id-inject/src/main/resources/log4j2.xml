@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，你会看到log4j2内部各种详细输出。 -->
+<!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数。-->
+<configuration status="error" monitorInterval="30">
+    <!--属性 使用来定义常量，以便在其他配置的时候引用，该配置是可选的-->
+    <Properties>
+        <Property name="local.logging.path">/logs</Property>
+        <Property name="project.name">project-name</Property>
+        <Property name="logging.file.path">${local.logging.path}/${project.name}</Property>
+    </Properties>
+
+    <!--输出源，用于定义日志输出的节点-->
+    <appenders>
+        <!--控制台输出源是将日志打印到控制台上-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!--这个都知道是输出日志的格式-->
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </Console>
+
+        <!--：文件输出源，用于将日志写入到指定的文件-->
+        <File name="log" fileName="log/test.log" append="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+
+        <!-- 这个会打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+        <!--fileName 指定当前日志文件的位置和文件名称-->
+        <!--filePattern 指定当发生Rolling时，文件的转移和重命名规则-->
+        <RollingRandomAccessFile name="RollingFile" fileName="logs/app.log" filePattern="log/${FILE_NAME}-%d{yyyy-MM-dd HH-mm}-%i.log.gz">
+            <PatternLayout pattern="%d %p %t %c{10}:%M:%L %m%n"/>
+            <!--指定日志等级-->
+            <ThresholdFilter level="debug" />
+            <!--指定当文件体积大于size指定的值时，触发Rolling-->
+            <SizeBasedTriggeringPolicy size="50MB"/>
+            <!--指定最多保存的文件个数,不设置则最多同一文件夹下7个文件-->
+            <DefaultRolloverStrategy max="20"/>
+            <!--需要和filePattern结合使用，注意filePattern中配置的文件重命名规则是${FILE_NAME}-%d{yyyy-MM-dd HH-mm}-%i，最小的时间粒度是mm，即每分钟生成一个新文件-->
+            <TimeBasedTriggeringPolicy />
+        </RollingRandomAccessFile>
+    </appenders>
+
+    <!--日志器-->
+    <loggers>
+        <!--建立一个默认的root的logger-->
+        <root level="trace">
+            <appender-ref ref="RollingFile"/>
+            <appender-ref ref="Console" level="${sys:logging.console.level:-off}"/>
+        </root>
+
+        <logger name="com.isen.util.mybatis.id.inject" level="debug" additivity="false">
+            <append-ref ref="RollingFile" />
+        </logger>
+    </loggers>
+
+    <!--组合过滤器-->
+    <!--在组合过滤器中，接受使用NEUTRAL（中立），被第一个过滤器接受的日志信息，会继续用后面的过滤器进行过滤，只有符合所有过滤器条件的日志信息，才会被最终写入日志文件。-->
+    <Filters>
+        <!--ThresholdFilter - 日志等级过滤器-->
+        <ThresholdFilter level="TRACE" onMatch="NEUTRAL" onMismatch="DENY"/>
+        <!--RegexFilter正则表达式过滤器-->
+        <RegexFilter regex=".* test .*" onMatch="NEUTRAL" onMismatch="DENY"/>
+        <!--TimeFilter - 时间过滤器。-->
+        <TimeFilter start="05:00:00" end="05:30:00" onMatch=" NEUTRAL " onMismatch="DENY"/>
+    </Filters>
+</configuration>
