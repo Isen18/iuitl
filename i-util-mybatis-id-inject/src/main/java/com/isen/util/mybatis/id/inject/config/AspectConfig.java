@@ -15,6 +15,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class AspectConfig {
     @Bean
     public IdAspect idAspect(){
-        return new IdAspect();
+        return new IdAspect("execution(* *com.isen.util.mybatis.id.inject.mapper.*.insert*(..))");
     }
 }

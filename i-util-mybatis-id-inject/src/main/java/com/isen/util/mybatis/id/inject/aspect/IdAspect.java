@@ -2,15 +2,13 @@ package com.isen.util.mybatis.id.inject.aspect;
 
 import com.isen.util.mybatis.id.inject.bridge.IdGenerator;
 import com.isen.util.mybatis.id.inject.exception.IdException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
 import javax.annotation.Resource;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Isen
@@ -20,44 +18,46 @@ import org.slf4j.LoggerFactory;
 @Aspect
 public class IdAspect {
 
+    private static final String ID = "id";
+
     @Resource
     private IdGenerator idGenerator;
 
-    /**
-     * id设置方法名
-     */
-    private static final String ID_SET_METHOD_NAME = "setId";
+    public IdAspect(String pointCutExpress){
 
-    private static final Logger logger = LoggerFactory.getLogger(IdAspect.class);
+    }
 
+    // TODO isen 2018/12/28 将配置提取出去
     @Pointcut("execution(* *com.isen.util.mybatis.id.inject.mapper.*.insert*(..))")
     public void idInjectPointcut(){}
 
     @Before("idInjectPointcut()")
     public void idInject(JoinPoint joinPoint) {
         Object[] objects = joinPoint.getArgs();
+        // TODO isen 2018/12/28 提供忽略注解
         if(objects.length < 1){
-            logger.warn("mapper的插入方法没有参数, joinPoint={}", joinPoint.toShortString());
-            return;
+            throw new IdException(String.format("mapper的插入方法没有参数, joinPoint=%s", joinPoint.toShortString()));
         }
 
-        //获取第一个参数
+        //获取第一个参数(默认)
+        // TODO isen 2018/12/28 提供注解进行自定义
         Object record = objects[0];
-        Class<?> clazz = record.getClass();
+        Class<?> recordType = record.getClass();
+        Field idField;
         try {
-            Method method = clazz.getMethod(ID_SET_METHOD_NAME, Long.class);
+            idField = recordType.getDeclaredField(ID);
+        } catch (NoSuchFieldException e) {
+            throw new IdException(String.format("class=%s, 不存在主键id字段", recordType.getName()));
+        }
+
+        try {
             Long id = idGenerator.generateId();
             if(id == null){
-                logger.error("主键生成失败, joinPoint={}", joinPoint.toShortString());
-                throw new IdException("主键生成失败");
+                throw new IdException(String.format("主键生成失败, joinPoint=%s", joinPoint.toShortString()));
             }
-
-                method.invoke(record, id);
-        } catch (NoSuchMethodException e) {
-            logger.warn(String.format("mapper的插入方法第一个参数没有方法=%s", ID_SET_METHOD_NAME), e);
+            AccessibleObject.setAccessible(new AccessibleObject[]{idField}, true);
+            idField.set(record, id);
         } catch (IllegalAccessException e) {
-            logger.warn("没有权限", e);
-        } catch (InvocationTargetException e) {
             throw new IdException(e.getMessage(), e);
         }
     }
