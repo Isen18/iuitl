@@ -1,0 +1,30 @@
+package com.isen.util.route.datasource.datasource;
+
+import org.aspectj.lang.JoinPoint;
+import org.springframework.util.StringUtils;
+
+/**
+ * @author Isen
+ * @date 2019/4/17 22:29
+ * @since 1.0
+ */
+public class DataSourceAspect {
+
+    public void before(JoinPoint point) {
+        String methodName = point.getSignature().getName();
+        if (isSlave(methodName)) {
+            RoutingDataSourceHolder.markDBType(DBTypeEn.SLAVE);
+        } else {
+            RoutingDataSourceHolder.markDBType(DBTypeEn.MASTER);
+        }
+    }
+
+
+    private Boolean isSlave(String methodName) {
+        // 方法名以query、find、get开头的方法名走从库
+        boolean re = StringUtils.startsWithIgnoreCase(methodName, "query");
+        re |= StringUtils.startsWithIgnoreCase(methodName, "find");
+        re |= StringUtils.startsWithIgnoreCase(methodName, "get");
+        return re;
+    }
+}

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!--
+	Mybatis生成Mapper配置文件(参见：http://www.mybatis.org/generator/configreference/xmlconfig.html)
+	1，cmd切换至项目根目录
+	2，执行：mvn mybatis-generator:generate -Dmybatis.generator.configurationFile=src/main/resources/generatorConfig.xml
+ -->
+<generatorConfiguration>
+    <!--<classPathEntry location="D:/pr1/apache-maven-3.5.4-bin/repository/mysql/mysql-connector-java/5.1.35/mysql-connector-java-5.1.35.jar"/>-->
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+
+        <!--注释生成-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+        <!--jdbc连接信息-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/test-master"
+                userId="root" password="root">
+        </jdbcConnection>
+
+        <!--pojo 配置-->
+        <javaModelGenerator targetPackage="com.isen.util.route.datasource.entity" targetProject="src/main/java">
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--mapper.xml 配置-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+        </sqlMapGenerator>
+
+        <!--mapper.java 配置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.isen.util.route.datasource.mapper" targetProject="src/main/java">
+        </javaClientGenerator>
+
+        <!--表配置-->
+        <table tableName="user" domainObjectName="User">
+            <!--如果主键是数据库自动生成的-->
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true" type="post" />
+        </table>
+    </context>
+</generatorConfiguration>
