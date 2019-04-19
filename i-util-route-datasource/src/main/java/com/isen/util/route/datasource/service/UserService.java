@@ -1,5 +1,6 @@
 package com.isen.util.route.datasource.service;
 
+import com.isen.util.route.datasource.annotation.Slave;
 import com.isen.util.route.datasource.entity.User;
 import com.isen.util.route.datasource.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Slave
     public User query(Long userId){
         return userMapper.selectByPrimaryKey(userId);
     }

@@ -13,8 +13,12 @@ public class RoutingDataSourceHolder {
         return holder.get();
     }
 
-    public static void markDBType(DBTypeEn dbTypeEn){
-        holder.set(dbTypeEn.getMean());
+    /**
+     * 标记要使用的数据源
+     * @param dbKeyEn 数据源key，对应AbstractRoutingDataSource中的lookupKey
+     */
+    public static void markDBKey(DBKeyEn dbKeyEn){
+        holder.set(dbKeyEn.getMean());
     }
 
 }

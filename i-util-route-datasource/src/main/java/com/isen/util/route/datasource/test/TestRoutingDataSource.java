@@ -4,6 +4,7 @@ import com.isen.util.route.datasource.entity.User;
 import com.isen.util.route.datasource.service.UserService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.util.Assert;
 
 /**
  * @author Isen
@@ -17,11 +18,14 @@ public class TestRoutingDataSource {
                 "config/application-context.xml");
         UserService userService = applicationContext.getBean(UserService.class);
 
-        User user = new User();
-        user.setName("isen");
-        userService.add(user);
+//        User user = new User();
+//        user.setName("isen");
+//        userService.add(user);
 
-        user = userService.query(2L);
-        user = userService.query(1L);
+        User user = userService.query(2L);
+        Assert.isNull(user, "uid[2] = null");
+
+        User user2 = userService.query(1L);
+        Assert.isNull(user2, "uid[1] = null");
     }
 }

@@ -10,12 +10,12 @@ import org.springframework.util.StringUtils;
  */
 public class DataSourceAspect {
 
-    public void before(JoinPoint point) {
+    public void routingDataSource(JoinPoint point) {
         String methodName = point.getSignature().getName();
         if (isSlave(methodName)) {
-            RoutingDataSourceHolder.markDBType(DBTypeEn.SLAVE);
+            RoutingDataSourceHolder.markDBKey(DBKeyEn.SLAVE);
         } else {
-            RoutingDataSourceHolder.markDBType(DBTypeEn.MASTER);
+            RoutingDataSourceHolder.markDBKey(DBKeyEn.MASTER);
         }
     }
 
