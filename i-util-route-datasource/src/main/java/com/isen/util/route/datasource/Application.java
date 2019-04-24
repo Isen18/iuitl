@@ -2,6 +2,9 @@ package com.isen.util.route.datasource;
 
 import com.isen.util.route.datasource.entity.User;
 import com.isen.util.route.datasource.service.UserService;
+import java.util.concurrent.ConcurrentHashMap;
+import org.apache.tomcat.jdbc.pool.interceptor.SlowQueryReport;
+import org.apache.tomcat.jdbc.pool.interceptor.SlowQueryReport.QueryStats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -37,5 +40,14 @@ public class Application {
         Assert.isTrue(user2 == null, "uid[1] != null");
 
         logger.info("ok");
+
+        //打印sql语句的监控信息
+        String poolName = ((org.apache.tomcat.jdbc.pool.DataSource)applicationContext.getBean("slaveDataSource")).getPoolName();
+        printSQLInfo(poolName);
+    }
+
+    private static void printSQLInfo(String poolName){
+        ConcurrentHashMap<String, QueryStats> map = SlowQueryReport.getPoolStats(poolName);
+        logger.info(map.toString());
     }
 }

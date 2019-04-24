@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.tomcat.jdbc.pool.interceptor.SlowQueryReport;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,7 +71,11 @@ public class DataSourceConfig {
     @Bean(name = SLAVE_DATASOURCE_NAME)
     @ConfigurationProperties(prefix = "jdbc.slave")
     public DataSource initSlaveDataSource() {
-        return DataSourceBuilder.create().build();
+//        return DataSourceBuilder.create().type(org.apache.tomcat.jdbc.pool.DataSource.class).build();
+        org.apache.tomcat.jdbc.pool.DataSource dataSource = DataSourceBuilder.create().type(org.apache.tomcat.jdbc.pool.DataSource.class).build();
+        dataSource.setJdbcInterceptors(SlowQueryReport.class.getName());
+//        dataSource.setJdbcInterceptors(SlowQueryReportJmx.class.getName());
+        return dataSource;
     }
 
 

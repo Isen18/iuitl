@@ -1,9 +1,5 @@
 package test;
 
-import com.alibaba.fastjson.JSON;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Isen
  * @date 2018/12/16 10:25
@@ -11,7 +7,7 @@ import java.util.Map;
  */
 public class Te2 {
     public void print2(){
-        new Pro().print();
+//        new Pro().print();
     }
 
     public static void main(String[] args) {
@@ -23,6 +19,6 @@ public class Te2 {
 ////        A a2= JSON.parseObject(json, A.class);
 ////        System.out.println(a2);
 
-        new Pro().print();
+//        new Pro().print();
     }
 }
