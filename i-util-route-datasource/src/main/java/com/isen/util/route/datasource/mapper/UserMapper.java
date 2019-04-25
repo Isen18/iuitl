@@ -20,6 +20,8 @@ public interface UserMapper {
 
     User selectByPrimaryKey(Long id);
 
+    User mySelectByPrimaryKey(@Param("id") Long id);
+
     int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
 
     int updateByExample(@Param("record") User record, @Param("example") UserExample example);
@@ -27,4 +29,8 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    List<User> mySelect(@Param("id")Long id, @Param("name")String name);
+
+    List<User> mySelect2(@Param("id")Long id, @Param("user") User user);
 }

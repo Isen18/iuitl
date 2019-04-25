@@ -161,30 +161,4 @@
     set name = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-
-  <select id="mySelectByPrimaryKey" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from user
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-
-  <select id="mySelect" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from user
-    where id = #{id,jdbcType=BIGINT}
-    and name = #{name}
-  </select>
-
-  <select id="mySelect2" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from user
-    where
-    id = #{id,jdbcType=BIGINT}
-    and
-    name = #{user.name}
-  </select>
-
 </mapper>

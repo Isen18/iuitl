@@ -97,6 +97,7 @@
         <module>i-util-rest-support-test</module>
         <module>javaPoet-le</module>
         <module>i-util-mybatis-id-inject</module>
+        <module>i-util-monitor</module>
     </modules>
 
     <distributionManagement>

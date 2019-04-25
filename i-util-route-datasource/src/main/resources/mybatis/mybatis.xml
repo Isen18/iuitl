@@ -4,10 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-    <!--<plugins>-->
-        <!--<plugin interceptor="com.example.plugin.ExamplePlugin">-->
-            <!--<property name="name" value="isen"/>-->
+    <plugins>
+        <!--<plugin interceptor="com.isen.util.route.datasource.plugin.SlowQueryPlugin2">-->
+            <!--<property name="slow_sql_threshold" value="100"/>-->
         <!--</plugin>-->
-    <!--</plugins>-->
+        <plugin interceptor="com.isen.util.route.datasource.plugin.SlowQueryPlugin3">
+            <property name="slow_sql_threshold" value="100"/>
+        </plugin>
+    </plugins>
 
 </configuration>
