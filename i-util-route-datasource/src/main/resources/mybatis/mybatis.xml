@@ -9,7 +9,7 @@
             <!--<property name="slow_sql_threshold" value="100"/>-->
         <!--</plugin>-->
         <plugin interceptor="com.isen.util.route.datasource.plugin.SlowQueryPlugin3">
-            <property name="slow_sql_threshold" value="100"/>
+            <property name="slow_sql_threshold" value="0"/>
         </plugin>
     </plugins>
 

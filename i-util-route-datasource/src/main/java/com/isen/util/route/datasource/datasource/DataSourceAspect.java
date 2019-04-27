@@ -22,7 +22,7 @@ public class DataSourceAspect {
 
     private Boolean isSlave(String methodName) {
         // 方法名以query、find、get开头的方法名走从库
-        boolean re = StringUtils.startsWithIgnoreCase(methodName, "query");
+        boolean re = StringUtils.startsWithIgnoreCase(methodName, "queryPa");
         re |= StringUtils.startsWithIgnoreCase(methodName, "find");
         re |= StringUtils.startsWithIgnoreCase(methodName, "get");
         return re;

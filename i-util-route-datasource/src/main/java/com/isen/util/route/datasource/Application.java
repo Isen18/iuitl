@@ -25,20 +25,20 @@ public class Application {
 
     public static void main(String[] args) throws Exception {
         ApplicationContext applicationContext = new SpringApplication(Application.class).run(args);
-        UserService userService = applicationContext.getBean(UserService.class);
+//        UserService userService = applicationContext.getBean(UserService.class);
 
 //        User user = new User();
 //        user.setName("isen");
 //        userService.add(user);
 
-//        User user = userService.query(2L);
+//        User user = userService.queryPa(2L);
 //        Assert.isTrue(user != null, "uid[2] = null");
 //
-//        User user2 = userService.query(1L);
+//        User user2 = userService.queryPa(1L);
 //        Assert.isTrue(user2 == null, "uid[1] != null");
 
-        testSlowQueryPlugin2(userService);
-        logger.info("ok");
+//        testSlowQueryPlugin2(userService);
+//        logger.info("ok");
 
         //打印sql语句的监控信息
 //        String poolName = ((org.apache.tomcat.jdbc.pool.DataSource)applicationContext.getBean("slaveDataSource")).getPoolName();
@@ -51,7 +51,7 @@ public class Application {
     }
 
     private static void testSlowQueryPlugin2(UserService userService){
-//        userService.query(2L);
+//        userService.queryPa(2L);
 //        userService.query2(2L);
         userService.query3(2L, "zhangsan");
         userService.query4(2L, "zhangsan");

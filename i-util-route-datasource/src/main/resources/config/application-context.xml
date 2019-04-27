@@ -65,7 +65,7 @@
     <!--<tx:advice id="txAdvice" transaction-manager="txManager">-->
         <!--<tx:attributes>-->
             <!--&lt;!&ndash;定义查询方法都是只读的 &ndash;&gt;-->
-            <!--<tx:method name="query*" read-only="true"/>-->
+            <!--<tx:method name="queryPa*" read-only="true"/>-->
             <!--<tx:method name="find*" read-only="true"/>-->
             <!--<tx:method name="get*" read-only="true"/>-->
 

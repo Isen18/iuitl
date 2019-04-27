@@ -32,12 +32,12 @@ import org.slf4j.LoggerFactory;
 @Intercepts({
         @Signature(
                 type = Executor.class, //拦截的目标对象类型，可以是Executor、StatementHandler、ParameterHandler和ResultSetHandler
-                method = "query", //对于query进行拦截
+                method = "queryPa", //对于query进行拦截
                 args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class,
                         CacheKey.class, BoundSql.class}),
         @Signature(
                 type = Executor.class,
-                method = "query",
+                method = "queryPa",
                 args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}),
         @Signature(
                 type = Executor.class,

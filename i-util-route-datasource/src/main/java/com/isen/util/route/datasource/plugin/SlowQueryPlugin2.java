@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 @Intercepts({
         @Signature(
                 type = StatementHandler.class, //拦截的目标对象类型，可以是Executor、StatementHandler、ParameterHandler和ResultSetHandler
-                method = "query", //对于query进行拦截
+                method = "queryPa", //对于query进行拦截
                 args = {Statement.class, ResultHandler.class}),
         @Signature(
                 type = StatementHandler.class,
