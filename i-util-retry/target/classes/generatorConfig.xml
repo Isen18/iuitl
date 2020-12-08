@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!-- 
+	Mybatis生成Mapper配置文件(参见：http://www.mybatis.org/generator/configreference/xmlconfig.html)
+	1，cmd切换至项目根目录
+	2，执行：mvn mybatis-generator:generate -Dmybatis.generator.configurationFile=src/main/resources/generatorConfig.xml
+ -->
+<generatorConfiguration>
+    <!--jdbc路径，如果使用maven 插件(配置了jdbc)，可以不用配置-->
+    <!--<classPathEntry location="D:/pr1/apache-maven-3.5.4-bin/repository/mysql/mysql-connector-java/5.1.35/mysql-connector-java-5.1.35.jar"/>-->
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!--生成的 pojo 实现 Serializable-->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+
+        <!--example 分页，但是不是用limit分页，而是用游标分页，数量大的话效果差，慎用-->
+        <!-- <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" /> -->
+
+        <!--注释生成-->
+        <commentGenerator>
+            <!--是否生成注释-->
+            <property name="suppressAllComments" value="true" />
+            <!--注释是否含有时间戳-->
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!--jdbc连接信息-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/student"
+                userId="root" password="root">
+        </jdbcConnection>
+
+        <!--类型解析-->
+        <!--<javaTypeResolver>-->
+            <!--是否强制使用 BigDecimal，默认false-->
+            <!--<property name="forceBigDecimals" value="false"/>-->
+        <!--</javaTypeResolver>-->
+
+        <!--pojo 配置-->
+        <javaModelGenerator targetPackage="com.isen.util.retry.pojo" targetProject="src/main/java">
+            <!--true:生成的类会在 targetPackage.schema 目录下，false:targetPackage，默认false-->
+            <!--<property name="enableSubPackages" value="true"/>-->
+            <!--是否对数据库返回以及写入数据库的字符串进行trim，默认false-->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--mapper.xml 配置-->
+        <sqlMapGenerator targetPackage="com.isen.util.retry.mapper" targetProject="src/main/resources">
+            <!--<property name="enableSubPackages" value="true"/>-->
+        </sqlMapGenerator>
+
+        <!--mapper.java 配置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.isen.util.retry.mapper" targetProject="src/main/java">
+            <!--<property name="enableSubPackages" value="true"/>-->
+        </javaClientGenerator>
+
+        <!--表配置-->
+        <!--schema="数据库模式"，不是必须的-->
+        <!--delimitIdentifiers="true", true:如果catalog/schema/tableName包含空格，默认false-->
+        <table tableName="retry_info" domainObjectName="RetryInfo">
+            <!--如果column是主键，sqlStatement="MYSQL", 即 id = SELECT LAST_INSERT_ID()-->
+            <!--identity="true", 即column是主键，在插入之后赋值给id。默认false, 在插入之前赋值给id-->
+            <!--type：If specified, then this value will be added as the type of the generated <selectKey> element. The value of this property should be either "pre" or "post".-->
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true" type="post" />
+        </table>
+    </context>
+</generatorConfiguration>

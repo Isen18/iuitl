@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+		    http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <!--启动AspectJ自动代理-->
+    <!--<aop:aspectj-autoproxy />-->
+
+    <!--<bean id="dataSourceAspect3" class="com.isen.util.route.datasource.datasource.DataSourceAspect3"/>-->
+
+    <!--<aop:config>-->
+        <!--<aop:advisor advice-ref="dataSourceAspect3" pointcut="(execution(* *com.isen.util.route.datasource.service..*.*(..)))"/>-->
+    <!--</aop:config>-->
+
+    <!--<context:component-scan base-package="com.isen.util.route.datasource"/>-->
+
+    <!--<context:property-placeholder location="config/jdbc.properties"/>-->
+
+    <!-- masterDataSource -->
+    <!--<bean id="masterDataSource" class="org.apache.commons.dbcp2.BasicDataSource"-->
+            <!--destroy-method="close">-->
+        <!--<property name="driverClassName" value="${jdbc.master.driverClassName}"/>-->
+        <!--<property name="url" value="${jdbc.master.url}"/>-->
+        <!--<property name="username" value="${jdbc.master.username}"/>-->
+        <!--<property name="password" value="${jdbc.master.password}"/>-->
+        <!--<property name="maxTotal" value="30"/>-->
+        <!--<property name="maxIdle" value="10"/>-->
+        <!--<property name="minIdle" value="5"/>-->
+    <!--</bean>-->
+
+    <!-- salveDataSource -->
+    <!--<bean id="salveDataSource" class="org.apache.commons.dbcp2.BasicDataSource"-->
+            <!--destroy-method="close">-->
+        <!--<property name="driverClassName" value="${jdbc.slave.driverClassName}"/>-->
+        <!--<property name="url" value="${jdbc.slave.url}"/>-->
+        <!--<property name="username" value="${jdbc.slave.username}"/>-->
+        <!--<property name="password" value="${jdbc.slave.password}"/>-->
+        <!--<property name="maxTotal" value="30"/>-->
+        <!--<property name="maxIdle" value="10"/>-->
+        <!--<property name="minIdle" value="5"/>-->
+    <!--</bean>-->
+
+    <!-- routingDataSource -->
+    <!--<bean id="routingDataSource"-->
+            <!--class="com.isen.util.route.datasource.datasource.RoutingDataSource">-->
+        <!--<property name="targetDataSources">-->
+            <!--<map key-type="java.lang.String">-->
+                <!--&lt;!&ndash; key要和RoutingDataSource中的key一致 &ndash;&gt;-->
+                <!--<entry key="master" value-ref="masterDataSource"/>-->
+                <!--<entry key="slave" value-ref="salveDataSource"/>-->
+            <!--</map>-->
+        <!--</property>-->
+        <!--&lt;!&ndash; 设置默认的数据源 &ndash;&gt;-->
+        <!--<property name="defaultTargetDataSource" ref="masterDataSource"/>-->
+    <!--</bean>-->
+
+    <!-- 定义事务管理器 -->
+    <!--<bean id="txManager"-->
+            <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+        <!--<property name="dataSource" ref="routingDataSource"/>-->
+    <!--</bean>-->
+
+    <!-- 定义事务策略 -->
+    <!--<tx:advice id="txAdvice" transaction-manager="txManager">-->
+        <!--<tx:attributes>-->
+            <!--&lt;!&ndash;定义查询方法都是只读的 &ndash;&gt;-->
+            <!--<tx:method name="query*" read-only="true"/>-->
+            <!--<tx:method name="find*" read-only="true"/>-->
+            <!--<tx:method name="get*" read-only="true"/>-->
+
+            <!--&lt;!&ndash; 主库执行操作，事务传播行为定义为默认行为 &ndash;&gt;-->
+            <!--<tx:method name="save*" propagation="REQUIRED"/>-->
+            <!--<tx:method name="add*" propagation="REQUIRED"/>-->
+            <!--<tx:method name="update*" propagation="REQUIRED"/>-->
+            <!--<tx:method name="delete*" propagation="REQUIRED"/>-->
+
+            <!--&lt;!&ndash;其他方法使用默认事务策略 &ndash;&gt;-->
+            <!--<tx:method name="*"/>-->
+        <!--</tx:attributes>-->
+    <!--</tx:advice>-->
+
+    <!-- 定义切面 -->
+    <!--<bean id="dataSourceAspect" class="com.isen.util.route.datasource.datasource.DataSourceAspect"/>-->
+
+    <!--<aop:config>-->
+        <!--<aop:pointcut id="txPointcut" expression="execution(* *com.isen.util.route.datasource.service..*.*(..))"/>-->
+        <!--<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>-->
+
+        <!-- -9999保证该切面优先级最高执行-->
+        <!--<aop:aspect ref="dataSourceAspect2" order="-9999">-->
+            <!--<aop:before method="routingDataSource" pointcut-ref="txPointcut"/>-->
+        <!--</aop:aspect>-->
+    <!--</aop:config>-->
+
+
+    <!-- 整合MyBatis -->
+    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+        <!--<property name="dataSource" ref="routingDataSource"/>-->
+        <!--&lt;!&ndash; 自动扫描mapping.xml文件，**表示迭代查找 &ndash;&gt;-->
+        <!--<property name="mapperLocations" value="mapper/**"/>-->
+    <!--</bean>-->
+
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+        <!--<property name="basePackage" value="com.isen.util.route.datasource.mapper"/>-->
+        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
+    <!--</bean>-->
+</beans>
