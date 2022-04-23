@@ -12,7 +12,7 @@
     <artifactId>i-util-mybatis-id-inject</artifactId>
 
     <properties>
-        <spring.version>5.1.3.RELEASE</spring.version>
+        <spring.version>5.3.19</spring.version>
     </properties>
 
     <dependencies>
